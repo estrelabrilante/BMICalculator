@@ -8,21 +8,23 @@
 
 import UIKit
 
-class CalculateViewController: UIViewController {
 
+
+class CalculateViewController: UIViewController {
+   // var calculatorBrain = CalculatorBrain(height: 0.0, weight: 0.0, result: 0.0, bmiVal:"");
+    var calculatorBrain = CalculatorBrain();
     @IBOutlet weak var weightLabel: UILabel!
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var heightSlider: UISlider!
     
     @IBOutlet weak var weightSlider: UISlider!
-    var bmiV = "0.0"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
 
     @IBAction func heightSlider(_ sender: UISlider) {
-
         //float number
         let result = String(format:"%.2f" , sender.value) ;
         heightLabel.text = "\(result) m"
@@ -31,25 +33,15 @@ class CalculateViewController: UIViewController {
     @IBAction func weightSlider(_ sender: UISlider) {
         // whole number, no decimal point
     weightLabel.text = "\(String(format:"%.0f" , sender.value)) kg";
-
-
-        
-   // print(Int(sender.value))
     
 }
     
     @IBAction func calculateBMI(_ sender: Any) {
-        let heightValue = heightSlider.value  ;
-        let weightValue = weightSlider.value ;
-    //let bmiCal = weightValue/(heightValue * heightValue)
-        //print(bmiCal)
-        //or
-    let bmi = weightValue / pow(heightValue, 2)
-        print(bmi)
-        bmiV = String(format: "%.1f",bmi)
+        var heightValue = heightSlider.value  ;
+        var weightValue = weightSlider.value ;
         
-        
-        self.performSegue(withIdentifier: "goToResult", sender: self)
+        calculatorBrain.calcBMI(ht:heightValue,wt:weightValue);
+self.performSegue(withIdentifier: "goToResult", sender: self)
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -57,7 +49,7 @@ class CalculateViewController: UIViewController {
         // Get the new view controller using segue.destination.
         let destinationVC = segue.destination as! FinalViewController
         // Pass the selected object to the new view controller.
-        destinationVC.bmiValue = bmiV
+    destinationVC.bmiValue = calculatorBrain.bmiV()
             
             
         }
